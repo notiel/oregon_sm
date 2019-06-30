@@ -17,26 +17,11 @@
 /*${.::oregonPill.cpp} .....................................................*/
 #include "qhsm.h"
 #include "oregonPill.h"
-
+#include "eventHandlers.h"
 
 #include <stdint.h>
 
 //Q_DEFINE_THIS_FILE
-
-
-
-#if ((QP_VERSION < 591) || (QP_VERSION != ((QP_RELEASE^4294967295U) % 0x3E8)))
-#error qpc version 5.9.1 or higher required
-#endif
-
-/*${SMs::OregonPill} .......................................................*/
-typedef struct {
-/* protected: */
-    QHsm super;
-
-/* public: */
-    unsigned int Timer;
-} OregonPill;
 
 /* protected: */
 static QState OregonPill_initial(OregonPill * const me, QEvt const * const e);
@@ -67,14 +52,11 @@ static OregonPill oregonPill; /* the only instance of the OregonPill class */
 QHsm * const the_oregonPill = (QHsm *) &oregonPill; /* the opaque pointer */
 
 /*${SMs::OregonPill_ctor} ..................................................*/
-void OregonPill_ctor(
-    (do not delete this caption):,
-    unsigned int HP,
-    unsigned int State)
-{
-    OregonPill *me = &oregonPill;
-         me->Timer = 0;
-        me->RadX = False;
+void OregonPill_ctor(QHsm* Player) {
+     OregonPill *me = &oregonPill;
+     me->Timer = 0;
+     me->Value = 0;
+     me->Player = Player;
      QHsm_ctor(&me->super, Q_STATE_CAST(&OregonPill_initial));
 }
 /*${SMs::OregonPill} .......................................................*/
@@ -110,20 +92,19 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
         /* ${SMs::OregonPill::SM::global::active::PILL_ANY} */
         case PILL_ANY_SIG: {
             PillIndicate();
-
-            TIME_TICK_1S[me->Timer >
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::1]} */
-        case 1]_SIG: {
-            me->Timer--;
-            status_ = Q_HANDLED();
-            break;
-        }
-        /* ${SMs::OregonPill::SM::global::active::TIME_TICK_1S} */
         case TIME_TICK_1S_SIG: {
-            status_ = Q_TRAN(&OregonPill_idle);
+        	if (me->Timer > 1) {
+                 me->Timer--;
+                status_ = Q_HANDLED();
+                break;
+        	}
+        	else {
+        		status_ = Q_TRAN(&OregonPill_idle);
+        	}
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_REMOVED} */
@@ -133,13 +114,13 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_RESET} */
         case PILL_RESET_SIG: {
-            PASS_EVENT_TO(Player);
+            PASS_EVENT_TO(me->Player);
             status_ = Q_TRAN(&OregonPill_idle);
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_GHOUL} */
         case PILL_GHOUL_SIG: {
-            PASS_EVENT_TO(Player);
+            PASS_EVENT_TO(me->Player);
             status_ = Q_TRAN(&OregonPill_idle);
             break;
         }
@@ -150,6 +131,7 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
     }
     return status_;
 }
+
 /*${SMs::OregonPill::SM::global::active::cast_rad_immune} ..................*/
 static QState OregonPill_cast_rad_immune(OregonPill * const me, QEvt const * const e) {
     QState status_;
@@ -365,9 +347,7 @@ static QState OregonPill_final(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::final} */
         case Q_ENTRY_SIG: {
-            printf("
-            Bye! Bye!
-            "); exit(0);
+            printf("Bye! Bye!"); exit(0);
             status_ = Q_HANDLED();
             break;
         }

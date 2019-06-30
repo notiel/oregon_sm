@@ -60,6 +60,14 @@ void ShowCurrentHealthGhoul (OregonPlayer* me) {
 
 //only a stub
 void SaveState(unsigned int State) {
-	printf("saved state %u", State);
+	printf("saved state %u\n", State);
 }
 
+void ClearPill() {
+	printf("Pill cleared\n");
+}
+
+void PillIndicate() {
+	Flash(255, 255, 255, FLASH_MS);
+	BeepForPeriod(300);
+}

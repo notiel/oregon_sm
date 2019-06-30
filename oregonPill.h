@@ -22,42 +22,33 @@ extern "C" {
 #endif
 #include "qhsm.h"    /* include own framework tagunil version */
 #include "eventHandlers.h"
-(do not delete this caption):
-#import <stdbool.h>
-#import "OregonPill.h"
-#import "EventHadlers.h"
-#DEFINE TIMEOUT_RADX_S 900
-#DEFINE TIMEOUT_HEAL_S 300
+#include "oregonPill.h"
+#include "oregonPlayer.h"
+#define TIMEOUT_RADX_S 900
+#define TIMEOUT_HEAL_S 300
 
 typedef struct oregonPillQEvt {
     QEvt super;
 } oregonPillQEvt;
 
-enum PlayerSignals {
-TICK_SEC_SIG = Q_USER_SIG,
 
-PILL_ANY_SIG,
-1]_SIG,
-PILL_HEAL_SIG,
-PILL_HEALSTATION_SIG,
-PILL_BLESS_SIG,
-PILL_CURSE_SIG,
-TIME_TICK_1S_SIG,
-PILL_ANTIRAD_SIG,
-PILL_REMOVED_SIG,
-PILL_RAD_X_SIG,
-PILL_RESET_SIG,
-PILL_GHOUL_SIG,
+/*${SMs::OregonPill} .......................................................*/
+typedef struct {
+/* protected: */
+    QHsm super;
 
-LAST_USER_SIG
-};
+/* public: */
+    unsigned int Timer;
+    unsigned int Value;
+    QHsm* Player;
+
+} OregonPill;
+
+
 extern QHsm * const the_oregonPill; /* opaque pointer to the oregonPill HSM */
 
 /*${SMs::OregonPill_ctor} ..................................................*/
-void OregonPill_ctor(
-    (do not delete this caption):,
-    unsigned int HP,
-    unsigned int State);
+void OregonPill_ctor(QHsm* Player);
 
 #ifdef __cplusplus
 }

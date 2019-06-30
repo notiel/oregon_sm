@@ -44,6 +44,7 @@
 
 #include "bsp.h"
 #include "oregonPlayer.h"
+#include "oregonPill.h"
 #include "service.h"
 #include "eventHandlers.h"
 #include "qhsm.h"
@@ -68,6 +69,8 @@ int main() {
 
     OregonPlayer_ctor(27000, HEALTHY, 0);
     QMSM_INIT(the_oregonPlayer, (QEvt *)0);
+    OregonPill_ctor(the_oregonPlayer);
+    QMSM_INIT(the_oregonPill, (QEvt *)0);
     QEvt e;
     uint8_t c;
     //e.sig = MAX_PILL_SIG;
@@ -106,8 +109,13 @@ int main() {
                 Oregon_e.super = e;
                 Oregon_e.value = 100;
                 r = QMSM_DISPATCH(the_oregonPlayer,  (QEvt *)&Oregon_e);
+                r = QMSM_DISPATCH(the_oregonPill,  (QEvt *)&Oregon_e);
+
             }
-            else r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+            else {
+            	r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+            	r = QMSM_DISPATCH(the_oregonPill,  &e);
+            }
             #ifdef DEBUG
                 printf("returned: %u\n\r", r);
             #endif    

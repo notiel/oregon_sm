@@ -17,6 +17,8 @@ void SaveTimerAgony(unsigned int Timer);
 void SaveState(unsigned int State);
 void ShowCurrentHealth (OregonPlayer* me);
 void ShowCurrentHealthGhoul (OregonPlayer* me);
+void ClearPill();
+void PillIndicate();
 
 
 #endif /* EVENTSHANDLERS_H_ */
