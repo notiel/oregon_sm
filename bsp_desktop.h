@@ -13,7 +13,7 @@ Module to replace for various platforms.
 #define DESKTOP
 
 #ifdef DESKTOP
-    #include "mHoS.h"
+    #include "oregonPlayer.h"
     enum DesktopSignal {
         TERMINATE_SIG = LAST_USER_SIG + 1 /* terminate the application */
     };

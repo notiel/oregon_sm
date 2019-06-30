@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include "bsp.h"
-#include "mHoS.h"
+#include "oregonPlayer.h"
 
 
 /* Keystroke-signal aliases to use with printf */

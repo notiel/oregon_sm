@@ -3,16 +3,18 @@
 
 #include "stdio.h"
 #include "qhsm.h"
+#include "oregonPlayer.h"
 #include <stdbool.h>
 
 
 //logic functions
 void UpdateHP(OregonPlayer* me, unsigned int HP);
-void Reset(MHoS* me); 
+void Reset(OregonPlayer* me);
 void Flash(unsigned int R, unsigned int G, unsigned int B, unsigned int Timeout);
-void BeepForTime(unsigned int Period);
+void BeepForPeriod(unsigned int Period);
 void SaveHP(unsigned int HP);
 void SaveTimerAgony(unsigned int Timer);
+void SaveState(unsigned int State);
 void ShowCurrentHealth (OregonPlayer* me);
 void ShowCurrentHealthGhoul (OregonPlayer* me);
 

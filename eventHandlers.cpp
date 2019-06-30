@@ -14,7 +14,7 @@ void UpdateHP(OregonPlayer* me, unsigned int NewHP) {
         me->CharHP = DEFAULT_HP;
     }
     SaveHP(me->CharHP);
-	printf("Update HP %u\n", HP);
+	printf("Update HP %u\n", NewHP);
 }
 
 void UpdateTimerAgony(OregonPlayer* me, unsigned int Timer) {
@@ -36,8 +36,8 @@ void Flash(unsigned int R, unsigned int G, unsigned int B, unsigned int Timeout)
 }
 
 //only a stub
-void BeepForTime(unsigned int Period) {
-	printf("Beep for %u ms\n", Timeout);
+void BeepForPeriod(unsigned int Period) {
+	printf("Beep for %u ms\n", Period);
 }
 
 //only a stub
@@ -51,12 +51,15 @@ void SaveTimerAgony(unsigned int Timer) {
 }
 
 void ShowCurrentHealth (OregonPlayer* me) {
-     Flash(255 - me->CharHP*me->ScaleStep, me>CharHP*me->ScaleStep, 0, FLASH_MS);
+     Flash(255 - me->CharHP*255/DEFAULT_HP, me->CharHP*255/DEFAULT_HP, 0, FLASH_MS);
 }
 
 void ShowCurrentHealthGhoul (OregonPlayer* me) {
-     Flash(255 - me->CharHP*me->ScaleStep, me>CharHP*me->ScaleStep, 0, FLASH_MS);
+     Flash(255 - me->CharHP*255/DEFAULT_HP, me->CharHP*255/DEFAULT_HP, 0, FLASH_MS);
 }
 
-
+//only a stub
+void SaveState(unsigned int State) {
+	printf("saved state %u", State);
+}
 

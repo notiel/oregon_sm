@@ -101,7 +101,7 @@ int main() {
         if (msg != (char *)0) {
                                  /* dispatch the event into the state machine */
             QState r;
-            OregonPlayerQEvt Oregon_e;
+            oregonPlayerQEvt Oregon_e;
             if (e.sig == RAD_RCVD_SIG) {
                 Oregon_e.super = e;
                 Oregon_e.value = 100;

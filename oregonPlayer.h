@@ -21,25 +21,37 @@
 extern "C" {
 #endif
 #include "qhsm.h"    /* include own framework tagunil version */
-#include "eventHandlers.h"
-(do not delete this caption):
-#import "EventHandlers.h"
-#DEFINE HEALTHY 0
-#DEFINE AGONY 1
-#DEFINE DEAD 2
-#DEFINE GHOUL-GOOD 3
-#DEFINE GHOUL_WOUNDED 4
-#DEFINE GHOUL_HEALING 5
-#DEFINE BLESSED 6
-...
-#DEFINE FLASH_MS 300
-#DEFINE TIMEOUT_AGONY_S 600
-#DEFINE TIMEOUT_DEATH_S 15
-#DEFINE TIMEOUT_RADX_S 900
-#DEFINE LONG_BEEP_MS 15000
-#DEFINE SHORT_BEEP_MS 500
-#DEFINE DEFAULT_HP 27000
-#DEFINE GHOUL_HP (DEFAULT_HP/3)
+
+#define HEALTHY 0
+#define AGONY 1
+#define DEAD 2
+#define GHOUL_GOOD 3
+#define GHOUL_WOUNDED 4
+#define GHOUL_HEALING 5
+#define BLESSED 6
+#define FLASH_MS 300
+#define TIMEOUT_AGONY_S 600
+#define TIMEOUT_DEATH_S 15
+#define TIMEOUT_RADX_S 900
+#define LONG_BEEP_MS 15000
+#define SHORT_BEEP_MS 500
+#define DEFAULT_HP 27000
+#define GHOUL_HP (DEFAULT_HP/3)
+
+/*${SMs::OregonPlayer} .....................................................*/
+typedef struct {
+/* protected: */
+    QHsm super;
+
+/* public: */
+    unsigned int CharHP;
+    QStateHandler StartState;
+    unsigned int TimerAgony;
+    unsigned int TimerDeath;
+} OregonPlayer;
+
+/* protected: */
+
 
 typedef struct oregonPlayerQEvt {
     QEvt super;
@@ -52,7 +64,6 @@ TICK_SEC_SIG = Q_USER_SIG,
 TIME_TICK_1S_SIG,
 HEAL_SIG,
 RAD_RCVD_SIG,
-GHOUL_HP)]_SIG,
 TIME_TICK_10S_SIG,
 TIME_TICK_1M_SIG,
 AGONY_SIG,
@@ -70,10 +81,9 @@ extern QHsm * const the_oregonPlayer; /* opaque pointer to the oregonPlayer HSM 
 
 /*${SMs::OregonPlayer_ctor} ................................................*/
 void OregonPlayer_ctor(
-    (do not delete this caption):,
     unsigned int HP,
-    unsigned int Statunsigned,
-    int TimerAgony);
+    unsigned int State,
+    unsigned int TimerAgony);
 
 #ifdef __cplusplus
 }

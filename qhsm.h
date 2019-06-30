@@ -55,6 +55,12 @@ typedef struct
 #define QMSM_INIT(me, event) (QMsm_init(me, event))
 #define QMSM_DISPATCH(me, event) (QMsm_dispatch(me, event)) 
 
+#define SIMPLE_DISPATCH(me_, sig_) \
+        do { QEvt e_; e_.sig = sig_##_SIG; QMSM_DISPATCH(me_, &e_); } while (0)  // Macro to simple dispatch calls with signal only
+
+#define PASS_EVENT_TO(obj_) \
+        do { QMSM_DISPATCH(obj_, e);  } while (0)  // Macro with clear name
+
 #ifdef __cplusplus
 extern "C" {
 #endif
