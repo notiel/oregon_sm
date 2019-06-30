@@ -26,9 +26,11 @@ extern "C" {
 #include "oregonPlayer.h"
 #define TIMEOUT_RADX_S 900
 #define TIMEOUT_HEAL_S 300
+#define TIMEOUT_ATOM_S 60
 
 typedef struct oregonPillQEvt {
     QEvt super;
+    unsigned int Value;
 } oregonPillQEvt;
 
 
@@ -41,6 +43,7 @@ typedef struct {
     unsigned int Timer;
     unsigned int Value;
     QHsm* Player;
+    oregonPillQEvt* e;
 
 } OregonPill;
 

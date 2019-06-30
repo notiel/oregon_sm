@@ -57,6 +57,7 @@ void OregonPill_ctor(QHsm* Player) {
      me->Timer = 0;
      me->Value = 0;
      me->Player = Player;
+     me->e = NULL;
      QHsm_ctor(&me->super, Q_STATE_CAST(&OregonPill_initial));
 }
 /*${SMs::OregonPill} .......................................................*/
@@ -138,7 +139,7 @@ static QState OregonPill_cast_rad_immune(OregonPill * const me, QEvt const * con
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::cast_rad_immune} */
         case Q_EXIT_SIG: {
-            SIMPLE_DISPATCH(Player, NOT_IMMUNE);
+            SIMPLE_DISPATCH(me->Player, NOT_IMMUNE);
             status_ = Q_HANDLED();
             break;
         }
@@ -185,7 +186,7 @@ static QState OregonPill_atom(OregonPill * const me, QEvt const * const e) {
         /* ${SMs::OregonPill::SM::global::active::atom} */
         case Q_ENTRY_SIG: {
             ClearPill();
-              SIMPLE_DISPATCH(Player, AGONY);
+              SIMPLE_DISPATCH(me->Player, AGONY);
             status_ = Q_HANDLED();
             break;
         }
@@ -214,14 +215,16 @@ static QState OregonPill_wait_bless(OregonPill * const me, QEvt const * const e)
         /* ${SMs::OregonPill::SM::global::active::atom::wait_bless} */
         case Q_ENTRY_SIG: {
             me->Timer = TIMEOUT_ATOM_S;
-
-            PILL_REMOVED/ //discard
+            status_ = Q_HANDLED();
+            break;
+        }
+        case PILL_REMOVED_SIG { //discard
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::atom::wait_bless} */
         case Q_EXIT_SIG: {
-            SIMPLE_DISPATCH(Player, BLESS);
+            SIMPLE_DISPATCH(me->Player, BLESSED);
             status_ = Q_HANDLED();
             break;
         }
@@ -293,7 +296,7 @@ static QState OregonPill_wait_heal(OregonPill * const me, QEvt const * const e) 
         case Q_EXIT_SIG: {
             me->e->sig = HEAL_SIG;
                me->e->Value = me->Value;
-               QHSM_DISPATCH(Player, &(me->e));
+               QHSM_DISPATCH(me->Player, &(me->e));
             status_ = Q_HANDLED();
             break;
         }
