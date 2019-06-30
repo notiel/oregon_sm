@@ -17,6 +17,8 @@
 /*${.::oregonPill.cpp} .....................................................*/
 #include "qhsm.h"
 #include "oregonPill.h"
+#include "oregonPlayer.h"
+
 #include "eventHandlers.h"
 
 #include <stdint.h>
@@ -139,7 +141,7 @@ static QState OregonPill_cast_rad_immune(OregonPill * const me, QEvt const * con
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::cast_rad_immune} */
         case Q_EXIT_SIG: {
-            SIMPLE_DISPATCH(me->Player, NOT_IMMUNE);
+            SIMPLE_DISPATCH(the_oregonPlayer, NOT_IMMUNE);
             status_ = Q_HANDLED();
             break;
         }
@@ -218,13 +220,13 @@ static QState OregonPill_wait_bless(OregonPill * const me, QEvt const * const e)
             status_ = Q_HANDLED();
             break;
         }
-        case PILL_REMOVED_SIG { //discard
+        case PILL_REMOVED_SIG: { //discard
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::atom::wait_bless} */
         case Q_EXIT_SIG: {
-            SIMPLE_DISPATCH(me->Player, BLESSED);
+            SIMPLE_DISPATCH(the_oregonPlayer, BLESSED);
             status_ = Q_HANDLED();
             break;
         }
@@ -294,9 +296,9 @@ static QState OregonPill_wait_heal(OregonPill * const me, QEvt const * const e) 
         }
         /* ${SMs::OregonPill::SM::global::active::wait_heal} */
         case Q_EXIT_SIG: {
-            me->e->sig = HEAL_SIG;
+               me->e->super.sig = HEAL_SIG;
                me->e->Value = me->Value;
-               QHSM_DISPATCH(me->Player, &(me->e));
+               QMSM_DISPATCH(the_oregonPlayer, (QEvt *)me->e);
             status_ = Q_HANDLED();
             break;
         }
