@@ -1,5 +1,24 @@
 #ifndef QHSM_H
 #define QHSM_H
+/****************************************************************************/
+/*! The current QP version as a decimal constant XXYZ, where XX is a 2-digit
+* major version number, Y is a 1-digit minor version number, and Z is
+* a 1-digit release number.
+*/
+#define QP_VERSION      650U
+
+/*! The current QP version number string of the form XX.Y.Z, where XX is
+* a 2-digit major version number, Y is a 1-digit minor version number,
+* and Z is a 1-digit release number.
+*/
+#define QP_VERSION_STR  "6.5.0"
+
+/*! Tamperproof current QP release (6.5.0) and date (2019-03-31) */
+#define QP_RELEASE      0x8E8DC8C5U
+
+
+/****************************************************************************/
+
 
 #include <stdint.h>
 
