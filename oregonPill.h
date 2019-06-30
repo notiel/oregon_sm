@@ -21,9 +21,7 @@
 extern "C" {
 #endif
 #include "qhsm.h"    /* include own framework tagunil version */
-#include "eventHandlers.h"
-#include "oregonPill.h"
-#include "oregonPlayer.h"
+
 #define TIMEOUT_RADX_S 900
 #define TIMEOUT_HEAL_S 300
 #define TIMEOUT_ATOM_S 60

@@ -63,11 +63,11 @@ void SaveState(unsigned int State) {
 	printf("saved state %u\n", State);
 }
 
-void ClearPill() {
+void ClearPill(void) {
 	printf("Pill cleared\n");
 }
 
-void PillIndicate() {
+void PillIndicate(void) {
 	Flash(255, 255, 255, FLASH_MS);
 	BeepForPeriod(300);
 }

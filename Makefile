@@ -124,7 +124,7 @@ DEFINES   := -DQP_API_VERSION=9999 \
 CC    := gcc
 CPP   := g++
 LINK  := gcc    # for C programs
-#LINK  := g++   # for C++ programs
+LINK  := g++   # for C++ programs
 RC    := windres
 
 # basic utilities (included in Qtools for Windows), see:
@@ -221,8 +221,8 @@ $(TARGET_BIN): $(TARGET_EXE)
 	$(BIN) -O binary $< $@
 
 $(TARGET_EXE) : $(C_OBJS_EXT) $(CPP_OBJS_EXT) $(RC_OBJS_EXT)
-	$(CC) $(CFLAGS) -c qpc.c -o $(BIN_DIR)/qpc.o
-	$(LINK) $(LINKFLAGS) $(LIB_DIRS) -o $@ $^ $(BIN_DIR)/qpc.o $(LIBS)
+	$(CC) $(CFLAGS) -std=c99 -c qhsm.c -o $(BIN_DIR)/qhsm.o
+	$(LINK) $(LINKFLAGS) $(LIB_DIRS) -o $@ $^ $(BIN_DIR)/qhsm.o $(LIBS)
 
 $(BIN_DIR)/%.d : %.cpp
 	$(CPP) -MM -MT $(@:.d=.o) $(CPPFLAGS) $< > $@
