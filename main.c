@@ -70,7 +70,7 @@ int main() {
 
     OregonPlayer_ctor(27000, HEALTHY, 0);
     QMSM_INIT(the_oregonPlayer, (QEvt *)0);
-    OregonPill_ctor(the_oregonPlayer);
+    OregonPill_ctor();
     QMSM_INIT(the_oregonPill, (QEvt *)0);
     QEvt e;
     uint8_t c;

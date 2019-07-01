@@ -34,6 +34,7 @@ extern "C" {
 #define TIMEOUT_DEATH_S 15
 #define TIMEOUT_RADX_S 900
 #define LONG_BEEP_MS 15000
+#define MEDIUM_BEEP_MS 15000
 #define SHORT_BEEP_MS 500
 #define DEFAULT_HP 27000
 #define GHOUL_HP (DEFAULT_HP/3)

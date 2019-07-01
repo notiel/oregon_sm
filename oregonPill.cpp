@@ -54,12 +54,10 @@ static OregonPill oregonPill; /* the only instance of the OregonPill class */
 QHsm * const the_oregonPill = (QHsm *) &oregonPill; /* the opaque pointer */
 
 /*${SMs::OregonPill_ctor} ..................................................*/
-void OregonPill_ctor(QHsm* Player) {
+void OregonPill_ctor() {
      OregonPill *me = &oregonPill;
      me->Timer = 0;
      me->Value = 0;
-     me->Player = Player;
-     me->e = NULL;
      QHsm_ctor(&me->super, Q_STATE_CAST(&OregonPill_initial));
 }
 /*${SMs::OregonPill} .......................................................*/
@@ -92,6 +90,11 @@ static QState OregonPill_global(OregonPill * const me, QEvt const * const e) {
 static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
+        case Q_ENTRY_SIG: {
+            printf("Entered pill_active\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         /* ${SMs::OregonPill::SM::global::active::PILL_ANY} */
         case PILL_ANY_SIG: {
             PillIndicate();
@@ -101,7 +104,7 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
         /* ${SMs::OregonPill::SM::global::active::1]} */
         case TIME_TICK_1S_SIG: {
         	if (me->Timer > 1) {
-                 me->Timer--;
+                me->Timer--;
                 status_ = Q_HANDLED();
                 break;
         	}
@@ -127,6 +130,11 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
             status_ = Q_TRAN(&OregonPill_idle);
             break;
         }
+        case Q_EXIT_SIG: {
+            printf("Exited pill_active\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPill_global);
             break;
@@ -140,7 +148,14 @@ static QState OregonPill_cast_rad_immune(OregonPill * const me, QEvt const * con
     QState status_;
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::cast_rad_immune} */
+        case Q_ENTRY_SIG: {
+        	printf("Entered pill_cast_rad_immune\n");
+            SIMPLE_DISPATCH(the_oregonPlayer, IMMUNE);
+            status_ = Q_HANDLED();
+            break;
+        }
         case Q_EXIT_SIG: {
+        	printf("Exited pill_cast_rad_immune\n");
             SIMPLE_DISPATCH(the_oregonPlayer, NOT_IMMUNE);
             status_ = Q_HANDLED();
             break;
@@ -158,8 +173,14 @@ static QState OregonPill_radx(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::cast_rad_immune::radx} */
         case Q_ENTRY_SIG: {
-            ClearPill();
-              me->Timer = TIMEOUT_RADX_S;
+            printf("Entered pill_radx\n");
+        	ClearPill();
+            me->Timer = TIMEOUT_RADX_S;
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited pill_radx\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -174,6 +195,16 @@ static QState OregonPill_radx(OregonPill * const me, QEvt const * const e) {
 static QState OregonPill_antirad(OregonPill * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
+        case Q_ENTRY_SIG: {
+            printf("Entered pill_antirad\n");
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+           printf("Exited pill_antirad\n");
+           status_ = Q_HANDLED();
+           break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPill_cast_rad_immune);
             break;
@@ -187,8 +218,14 @@ static QState OregonPill_atom(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::atom} */
         case Q_ENTRY_SIG: {
-            ClearPill();
-              SIMPLE_DISPATCH(the_oregonPlayer, AGONY);
+            printf("Entered pill_atom\n");
+        	ClearPill();
+            SIMPLE_DISPATCH(the_oregonPlayer, AGONY);
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited pill_atom\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -203,6 +240,16 @@ static QState OregonPill_atom(OregonPill * const me, QEvt const * const e) {
 static QState OregonPill_wait_curse(OregonPill * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
+        case Q_ENTRY_SIG: {
+            printf("Entered pill_wait_curse\n");
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited pill_wait_curse\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPill_atom);
             break;
@@ -216,6 +263,7 @@ static QState OregonPill_wait_bless(OregonPill * const me, QEvt const * const e)
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::atom::wait_bless} */
         case Q_ENTRY_SIG: {
+        	printf("Entered pill_wait_bless\n");
             me->Timer = TIMEOUT_ATOM_S;
             status_ = Q_HANDLED();
             break;
@@ -226,6 +274,7 @@ static QState OregonPill_wait_bless(OregonPill * const me, QEvt const * const e)
         }
         /* ${SMs::OregonPill::SM::global::active::atom::wait_bless} */
         case Q_EXIT_SIG: {
+        	printf("Exited pill_wait_bless\n");
             SIMPLE_DISPATCH(the_oregonPlayer, BLESSED);
             status_ = Q_HANDLED();
             break;
@@ -243,6 +292,7 @@ static QState OregonPill_idle(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::idle} */
         case Q_ENTRY_SIG: {
+        	printf("Entered pill_idle\n");
             me->Timer = 0;
             status_ = Q_HANDLED();
             break;
@@ -277,6 +327,11 @@ static QState OregonPill_idle(OregonPill * const me, QEvt const * const e) {
             status_ = Q_TRAN(&OregonPill_radx);
             break;
         }
+        case Q_EXIT_SIG: {
+            printf("Exited pill_idle\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPill_active);
             break;
@@ -290,15 +345,18 @@ static QState OregonPill_wait_heal(OregonPill * const me, QEvt const * const e) 
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::wait_heal} */
         case Q_ENTRY_SIG: {
+        	printf("Entered pill_wait_heal\n");
             me->Timer = TIMEOUT_HEAL_S;
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::wait_heal} */
         case Q_EXIT_SIG: {
-               me->e->super.sig = HEAL_SIG;
-               me->e->Value = me->Value;
-               QMSM_DISPATCH(the_oregonPlayer, (QEvt *)me->e);
+        	   printf("Exited pill_wait_heal\n");
+        	   oregonPillQEvt* new_e;
+        	   new_e->super.sig = HEAL_SIG;
+        	   new_e->Value = me->Value;
+               QMSM_DISPATCH(the_oregonPlayer, (QEvt *)new_e);
             status_ = Q_HANDLED();
             break;
         }
@@ -315,7 +373,13 @@ static QState OregonPill_station(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::wait_heal::station} */
         case Q_ENTRY_SIG: {
+        	printf("Entered pill_healstation\n");
             me->Value = DEFAULT_HP;
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited pill_healstation\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -332,10 +396,17 @@ static QState OregonPill_simple(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::wait_heal::simple} */
         case Q_ENTRY_SIG: {
+        	printf("Entered pill_heal_simple\n");
             ClearPill();
-              me->Value = DEFAULT_HP/2;
+            me->Value = DEFAULT_HP/2;
             status_ = Q_HANDLED();
             break;
+        }
+        case Q_EXIT_SIG: {
+             printf("Entered pill_heal_simple\n");
+             me->Timer = 0;
+             status_ = Q_HANDLED();
+             break;
         }
         default: {
             status_ = Q_SUPER(&OregonPill_wait_heal);
