@@ -252,7 +252,7 @@ static QState OregonPlayer_healthy(OregonPlayer * const me, QEvt const * const e
         }
         /* ${SMs::OregonPlayer::SM::global::active::alive::healthy::TIME_TICK_1S} */
         case TIME_TICK_1S_SIG: {
-            ShowCurrentHealth(me);
+            //ShowCurrentHealth(me);
             status_ = Q_HANDLED();
             break;
         }

@@ -111,7 +111,7 @@ int main() {
             if (e.sig == RAD_RCVD_SIG) {
                 Oregon_e.super = e;
                 Oregon_e.value = 100;
-                r = QMSM_DISPATCH(the_oregonPill,  (QEvt *)&Oregon_e);
+                //r = QMSM_DISPATCH(the_oregonPill,  (QEvt *)&Oregon_e);
                 r = QMSM_DISPATCH(the_oregonPlayer,  (QEvt *)&Oregon_e);
                 
             }
@@ -139,7 +139,7 @@ int main() {
             }
             else {
             	r = QMSM_DISPATCH(the_oregonPill,  &e);
-                r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+                //r = QMSM_DISPATCH(the_oregonPlayer,  &e);
             }
             #ifdef DEBUG
                 printf("returned: %u\n\r", r);

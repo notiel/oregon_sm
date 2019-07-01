@@ -14,7 +14,7 @@ void UpdateHP(OregonPlayer* me, unsigned int NewHP) {
         me->CharHP = DEFAULT_HP;
     }
     SaveHP(me->CharHP);
-	printf("Update HP %u\n", NewHP);
+	printf("Update HP %u\n", me->CharHP);
 }
 
 void UpdateTimerAgony(OregonPlayer* me, unsigned int Timer) {

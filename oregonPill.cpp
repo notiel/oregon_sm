@@ -292,7 +292,7 @@ static QState OregonPill_idle(OregonPill * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPill::SM::global::active::idle} */
         case Q_ENTRY_SIG: {
-        	printf("Entered pill_idle\n");
+        	//printf("Entered pill_idle\n");
             me->Timer = 0;
             status_ = Q_HANDLED();
             break;
@@ -328,7 +328,7 @@ static QState OregonPill_idle(OregonPill * const me, QEvt const * const e) {
             break;
         }
         case Q_EXIT_SIG: {
-            printf("Exited pill_idle\n");
+            //printf("Exited pill_idle\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -353,10 +353,10 @@ static QState OregonPill_wait_heal(OregonPill * const me, QEvt const * const e) 
         /* ${SMs::OregonPill::SM::global::active::wait_heal} */
         case Q_EXIT_SIG: {
         	   printf("Exited pill_wait_heal\n");
-        	   oregonPillQEvt* new_e;
-        	   new_e->super.sig = HEAL_SIG;
-        	   new_e->Value = me->Value;
-               QMSM_DISPATCH(the_oregonPlayer, (QEvt *)new_e);
+        	   oregonPillQEvt new_e;
+        	   new_e.super.sig = HEAL_SIG;
+        	   new_e.Value = me->Value;
+               QMSM_DISPATCH(the_oregonPlayer, (QEvt *)&new_e);
             status_ = Q_HANDLED();
             break;
         }
