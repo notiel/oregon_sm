@@ -117,13 +117,13 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_RESET} */
         case PILL_RESET_SIG: {
-            PASS_EVENT_TO(me->Player);
+            PASS_EVENT_TO(the_oregonPlayer);
             status_ = Q_TRAN(&OregonPill_idle);
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_GHOUL} */
         case PILL_GHOUL_SIG: {
-            PASS_EVENT_TO(me->Player);
+            PASS_EVENT_TO(the_oregonPlayer);
             status_ = Q_TRAN(&OregonPill_idle);
             break;
         }
@@ -188,7 +188,7 @@ static QState OregonPill_atom(OregonPill * const me, QEvt const * const e) {
         /* ${SMs::OregonPill::SM::global::active::atom} */
         case Q_ENTRY_SIG: {
             ClearPill();
-              SIMPLE_DISPATCH(me->Player, AGONY);
+              SIMPLE_DISPATCH(the_oregonPlayer, AGONY);
             status_ = Q_HANDLED();
             break;
         }
