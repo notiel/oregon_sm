@@ -53,6 +53,7 @@
     
 int main() {
     uint8_t     i;                                      // Universal counter
+    uint32_t    seconds=0;
     printf("Heart Of Storm State Machines\n");
     #ifdef DEBUG_SM
         printf("DEBUG_SM enabled\n\r");
@@ -97,8 +98,10 @@ int main() {
             tickCtr = 10;
             e.sig = TIME_TICK_1S_SIG;
             msg = "TICK";
+            seconds++;
+            printf("Time: %ds. ", seconds);
             }
-        // if (BlinkOn) {
+        // if (BlinkOn) {c
         //     if (tickCtr % BlinkTimer == 0) RGB_blink_toggle();
         // }
         if (msg != (char *)0) {
@@ -108,13 +111,35 @@ int main() {
             if (e.sig == RAD_RCVD_SIG) {
                 Oregon_e.super = e;
                 Oregon_e.value = 100;
-                r = QMSM_DISPATCH(the_oregonPlayer,  (QEvt *)&Oregon_e);
                 r = QMSM_DISPATCH(the_oregonPill,  (QEvt *)&Oregon_e);
-
+                r = QMSM_DISPATCH(the_oregonPlayer,  (QEvt *)&Oregon_e);
+                
+            }
+            else if (e.sig == TIME_TICK_10S_SIG) {
+                e.sig = TIME_TICK_1S_SIG;
+                for (i = 1; i <= 10; i++) {
+                    r = QMSM_DISPATCH(the_oregonPill, &e);
+                    r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+                    seconds++;
+                }
+                e.sig = TIME_TICK_10S_SIG;
+                r = QMSM_DISPATCH(the_oregonPill, &e);
+                r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+            }
+            else if (e.sig == TIME_TICK_1M_SIG) {
+                e.sig = TIME_TICK_1S_SIG;
+                for (i = 1; i <= 60; i++) {
+                    r = QMSM_DISPATCH(the_oregonPill, &e);
+                    r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+                    seconds++;
+                }
+                e.sig = TIME_TICK_1M_SIG;
+                r = QMSM_DISPATCH(the_oregonPill, &e);
+                r = QMSM_DISPATCH(the_oregonPlayer,  &e);
             }
             else {
-            	r = QMSM_DISPATCH(the_oregonPlayer,  &e);
             	r = QMSM_DISPATCH(the_oregonPill,  &e);
+                r = QMSM_DISPATCH(the_oregonPlayer,  &e);
             }
             #ifdef DEBUG
                 printf("returned: %u\n\r", r);
