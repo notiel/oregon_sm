@@ -22,3 +22,5 @@ extern const KeyStroke KeyStrokes[];    // Definition moved to C file, otherwise
 
 
 #endif
+
+unsigned int KeyNumber();

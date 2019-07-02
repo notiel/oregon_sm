@@ -62,7 +62,7 @@ int main() {
         printf("Desktop version\n\r");
     #endif
     //for (i = 0; i < ARRAY_SIZE(KeyStrokes) - 1;i++)     // Exluding ESC
-    for (i = 0; i < (TERMINATE_SIG - Q_USER_SIG) - 1;i++)     // Exluding ESC
+    for (i = 0; i < KeyNumber()-1; i++)      // Exluding ESC
         printf("%18s - '%c'\n\r", KeyStrokes[i].Alias, KeyStrokes[i].Key);
     printf("Press ESC to quit...\n");
 
@@ -100,7 +100,8 @@ int main() {
             msg = "TICK";
             seconds++;
             printf("Time: %ds. ", seconds);
-            }
+       }
+
         // if (BlinkOn) {c
         //     if (tickCtr % BlinkTimer == 0) RGB_blink_toggle();
         // }
@@ -137,7 +138,12 @@ int main() {
                 r = QMSM_DISPATCH(the_oregonPill, &e);
                 r = QMSM_DISPATCH(the_oregonPlayer,  &e);
             }
-            else {
+            else if (e.sig == TIME_TICK_1S_SIG) {
+                e.sig = TIME_TICK_1S_SIG;
+			    r = QMSM_DISPATCH(the_oregonPill, &e);
+                r = QMSM_DISPATCH(the_oregonPlayer,  &e);
+
+            } else {
             	r = QMSM_DISPATCH(the_oregonPill,  &e);
                 //r = QMSM_DISPATCH(the_oregonPlayer,  &e);
             }

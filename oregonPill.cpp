@@ -354,13 +354,23 @@ static QState OregonPill_wait_heal(OregonPill * const me, QEvt const * const e) 
             status_ = Q_HANDLED();
             break;
         }
+        case TIME_TICK_1S_SIG: {
+        	if (me->Timer == 1) {
+        	    oregonPillQEvt new_e;
+        	    new_e.super.sig = HEAL_SIG;
+        	    new_e.Value = me->Value;
+        	    QMSM_DISPATCH(the_oregonPlayer, (QEvt *)&new_e);
+        	    status_ = Q_TRAN(&OregonPill_idle);
+        	}
+        	else {
+        		me->Timer--;
+        		status_ = Q_HANDLED();
+        	}
+        	break;
+        }
         /* ${SMs::OregonPill::SM::global::active::wait_heal} */
         case Q_EXIT_SIG: {
-        	   printf("Exited pill_wait_heal\n");
-        	   oregonPillQEvt new_e;
-        	   new_e.super.sig = HEAL_SIG;
-        	   new_e.Value = me->Value;
-               QMSM_DISPATCH(the_oregonPlayer, (QEvt *)&new_e);
+        	printf("Exited pill_wait_heal\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -407,7 +417,7 @@ static QState OregonPill_simple(OregonPill * const me, QEvt const * const e) {
             break;
         }
         case Q_EXIT_SIG: {
-             printf("Entered pill_heal_simple\n");
+             printf("Exited pill_heal_simple\n");
              me->Timer = 0;
              status_ = Q_HANDLED();
              break;

@@ -271,7 +271,6 @@ static QState OregonPlayer_blessed(OregonPlayer * const me, QEvt const * const e
         }
         case Q_EXIT_SIG: {
             printf("Exited player_blessed\n");
-            SaveState(BLESSED);
             status_ = Q_HANDLED();
             break;
         }
@@ -370,6 +369,7 @@ static QState OregonPlayer_agony(OregonPlayer * const me, QEvt const * const e) 
             /* ${SMs::OregonPlayer::SM::global::active::alive::agony::TIME_TICK_1S::[else]} */
             else {
                 me->TimerAgony++;
+                printf("Timer Agony: %u", me->TimerAgony);
                 Flash(255, 0, 0, FLASH_MS);
                 status_ = Q_HANDLED();
             }
@@ -538,19 +538,19 @@ static QState OregonPlayer_dead(OregonPlayer * const me, QEvt const * const e) {
         	SaveState(DEAD);
             BeepForPeriod(LONG_BEEP_MS);
             UpdateHP(me, 0);
-            Flash(255, 0, 0, 1000);
+            Flash(255, 0, 0, FLASH_1M);
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPlayer::SM::global::active::dead::TIME_TICK_1M} */
         case TIME_TICK_1M_SIG: {
             BeepForPeriod(SHORT_BEEP_MS);
-            Flash(255, 0, 0, 1000);
+            Flash(255, 0, 0, FLASH_1M);
             status_ = Q_HANDLED();
             break;
         }
         case Q_EXIT_SIG: {
-            printf("Exited player_agony\n");
+            printf("Exited player_dead\n");
             status_ = Q_HANDLED();
             break;
         }
