@@ -82,25 +82,25 @@ void OregonPlayer_ctor(
 
            }
            case GHOUL_GOOD: {
-                    me->StartState =
-                    (QStateHandler)& OregonPlayer_ghoul_good;
-                    break;
-                }
+               me->StartState =
+               (QStateHandler)& OregonPlayer_ghoul_good;
+               break;
+           }
            case GHOUL_WOUNDED: {
-                    me->StartState =
-                    (QStateHandler)& OregonPlayer_ghoul_wounded;
-                    break;
-                }
+               me->StartState =
+               (QStateHandler)& OregonPlayer_ghoul_wounded;
+               break;
+           }
            case GHOUL_HEALING: {
-                    me->StartState =
-                    (QStateHandler)& OregonPlayer_ghoul_healing;
-                    break;
-                }
+               me->StartState =
+               (QStateHandler)& OregonPlayer_ghoul_healing;
+               break;
+           }
            case BLESSED: {
-                    me->StartState =
-                    (QStateHandler)& OregonPlayer_blessed;
-                    break;
-                }
+               me->StartState =
+               (QStateHandler)& OregonPlayer_blessed;
+               break;
+           }
            default:
                me->StartState =(QStateHandler)& OregonPlayer_healthy;
        }
@@ -137,6 +137,11 @@ static QState OregonPlayer_global(OregonPlayer * const me, QEvt const * const e)
 static QState OregonPlayer_active(OregonPlayer * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
+        case Q_ENTRY_SIG: {
+        	printf("Entered player_active\n");
+        	status_ = Q_HANDLED();
+        	break;
+        }
         /* ${SMs::OregonPlayer::SM::global::active::PILL_RESET} */
         case PILL_RESET_SIG: {
             Reset(me);
@@ -146,6 +151,11 @@ static QState OregonPlayer_active(OregonPlayer * const me, QEvt const * const e)
         /* ${SMs::OregonPlayer::SM::global::active::PILL_TEST} */
         case PILL_TEST_SIG: {
             status_ = Q_TRAN(&OregonPlayer_test);
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_active\n");
+            status_ = Q_HANDLED();
             break;
         }
         default: {
@@ -159,10 +169,19 @@ static QState OregonPlayer_active(OregonPlayer * const me, QEvt const * const e)
 static QState OregonPlayer_alive(OregonPlayer * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
-
+        case Q_ENTRY_SIG: {
+               printf("Entered player_alive\n");
+               status_ = Q_HANDLED();
+               break;
+           }
         /* ${SMs::OregonPlayer::SM::global::active::alive::PILL_GHOUL} */
         case PILL_GHOUL_SIG: {
             status_ = Q_TRAN(&OregonPlayer_ghoul_good);
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_alive\n");
+            status_ = Q_HANDLED();
             break;
         }
         default: {
@@ -178,7 +197,8 @@ static QState OregonPlayer_immune(OregonPlayer * const me, QEvt const * const e)
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::alive::immune} */
         case Q_ENTRY_SIG: {
-            BeepForPeriod(MEDIUM_BEEP_MS);
+            printf("entered player_immune\n");
+        	BeepForPeriod(MEDIUM_BEEP_MS);
             status_ = Q_HANDLED();
             break;
         }
@@ -199,6 +219,12 @@ static QState OregonPlayer_immune(OregonPlayer * const me, QEvt const * const e)
             status_ = Q_TRAN(&OregonPlayer_agony);
             break;
         }
+        case Q_EXIT_SIG: {
+            printf("exited player_immune\n");
+            status_ = Q_HANDLED();
+            break;
+        }
+
         default: {
             status_ = Q_SUPER(&OregonPlayer_alive);
             break;
@@ -211,8 +237,18 @@ static QState OregonPlayer_temp_immune(OregonPlayer * const me, QEvt const * con
     QState status_;
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::alive::immune::temp_immune::NOT_IMMUNE} */
+        case Q_ENTRY_SIG: {
+            printf("entered player_temp_immune\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         case NOT_IMMUNE_SIG: {
             status_ = Q_TRAN(&OregonPlayer_healthy);
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("exited player_temp_immune\n");
+            status_ = Q_HANDLED();
             break;
         }
         default: {
@@ -228,6 +264,13 @@ static QState OregonPlayer_blessed(OregonPlayer * const me, QEvt const * const e
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::alive::immune::blessed} */
         case Q_ENTRY_SIG: {
+        	printf("Entered player_blessed\n");
+            SaveState(BLESSED);
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_blessed\n");
             SaveState(BLESSED);
             status_ = Q_HANDLED();
             break;
@@ -245,8 +288,9 @@ static QState OregonPlayer_healthy(OregonPlayer * const me, QEvt const * const e
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::alive::healthy} */
         case Q_ENTRY_SIG: {
-            SaveState(HEALTHY);
-                BeepForPeriod(MEDIUM_BEEP_MS);
+            printf("Entered healthy\n");
+        	SaveState(HEALTHY);
+            BeepForPeriod(MEDIUM_BEEP_MS);
             status_ = Q_HANDLED();
             break;
         }
@@ -285,6 +329,11 @@ static QState OregonPlayer_healthy(OregonPlayer * const me, QEvt const * const e
             status_ = Q_TRAN(&OregonPlayer_temp_immune);
             break;
         }
+        case Q_EXIT_SIG: {
+             printf("Exited player_healthy\n");
+             status_ = Q_HANDLED();
+             break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPlayer_alive);
             break;
@@ -298,6 +347,7 @@ static QState OregonPlayer_agony(OregonPlayer * const me, QEvt const * const e) 
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::alive::agony} */
         case Q_ENTRY_SIG: {
+        	printf("Entered player_agony\n");
             BeepForPeriod(LONG_BEEP_MS);
             SaveState(AGONY);
             UpdateHP(me, 1);
@@ -320,7 +370,7 @@ static QState OregonPlayer_agony(OregonPlayer * const me, QEvt const * const e) 
             /* ${SMs::OregonPlayer::SM::global::active::alive::agony::TIME_TICK_1S::[else]} */
             else {
                 me->TimerAgony++;
-                    Flash(255, 0, 0, FLASH_MS);
+                Flash(255, 0, 0, FLASH_MS);
                 status_ = Q_HANDLED();
             }
             break;
@@ -336,6 +386,11 @@ static QState OregonPlayer_agony(OregonPlayer * const me, QEvt const * const e) 
             status_ = Q_TRAN(&OregonPlayer_healthy);
             break;
         }
+        case Q_EXIT_SIG: {
+            printf("Exited player_agony\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPlayer_alive);
             break;
@@ -347,9 +402,19 @@ static QState OregonPlayer_agony(OregonPlayer * const me, QEvt const * const e) 
 static QState OregonPlayer_ghoul(OregonPlayer * const me, QEvt const * const e) {
     QState status_;
     switch (e->sig) {
+        case Q_ENTRY_SIG: {
+            printf("Entered player_ghoul\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         /* ${SMs::OregonPlayer::SM::global::active::ghoul::TIME_TICK_1S} */
         case TIME_TICK_1S_SIG: {
             ShowCurrentHealthGhoul(me);
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_ghoul\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -366,15 +431,21 @@ static QState OregonPlayer_ghoul_good(OregonPlayer * const me, QEvt const * cons
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::ghoul::good} */
         case Q_ENTRY_SIG: {
-            SaveState(GHOUL_GOOD);
-                BeepForPeriod(MEDIUM_BEEP_MS);
-                UpdateHP(me, GHOUL_HP);
+            printf("Entered ghoul_good\n");
+        	SaveState(GHOUL_GOOD);
+            BeepForPeriod(MEDIUM_BEEP_MS);
+            UpdateHP(me, GHOUL_HP);
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPlayer::SM::global::active::ghoul::good::PILL_REMOVED} */
         case PILL_REMOVED_SIG: {
             status_ = Q_TRAN(&OregonPlayer_ghoul_wounded);
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_ghoul_good\n");
+            status_ = Q_HANDLED();
             break;
         }
         default: {
@@ -390,6 +461,7 @@ static QState OregonPlayer_ghoul_healing(OregonPlayer * const me, QEvt const * c
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::ghoul::healing} */
         case Q_ENTRY_SIG: {
+        	printf("Entered ghoul healing\n");
             SaveState(GHOUL_HEALING);
             status_ = Q_HANDLED();
             break;
@@ -406,6 +478,11 @@ static QState OregonPlayer_ghoul_healing(OregonPlayer * const me, QEvt const * c
             }
             break;
         }
+        case Q_EXIT_SIG: {
+            printf("Exited ghoul_healing\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPlayer_ghoul);
             break;
@@ -420,9 +497,10 @@ static QState OregonPlayer_ghoul_wounded(OregonPlayer * const me, QEvt const * c
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::ghoul::wounded} */
         case Q_ENTRY_SIG: {
+        	printf("Entered ghoul_wounded\n");
             SaveState(GHOUL_WOUNDED);
-                UpdateHP(me, 1);
-                BeepForPeriod(LONG_BEEP_MS);
+            UpdateHP(me, 1);
+            BeepForPeriod(LONG_BEEP_MS);
             status_ = Q_HANDLED();
             break;
         }
@@ -438,6 +516,11 @@ static QState OregonPlayer_ghoul_wounded(OregonPlayer * const me, QEvt const * c
             status_ = Q_TRAN(&OregonPlayer_ghoul_healing);
             break;
         }
+        case Q_EXIT_SIG: {
+            printf("Exited ghoul_wounded\n");
+            status_ = Q_HANDLED();
+            break;
+        }
         default: {
             status_ = Q_SUPER(&OregonPlayer_ghoul);
             break;
@@ -451,17 +534,23 @@ static QState OregonPlayer_dead(OregonPlayer * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::active::dead} */
         case Q_ENTRY_SIG: {
-            SaveState(DEAD);
-                BeepForPeriod(LONG_BEEP_MS);
-                UpdateHP(me, 0);
-                Flash(255, 0, 0, 1000);
+            printf("entered player_dead\n");
+        	SaveState(DEAD);
+            BeepForPeriod(LONG_BEEP_MS);
+            UpdateHP(me, 0);
+            Flash(255, 0, 0, 1000);
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPlayer::SM::global::active::dead::TIME_TICK_1M} */
         case TIME_TICK_1M_SIG: {
             BeepForPeriod(SHORT_BEEP_MS);
-                Flash(255, 0, 0, 1000);
+            Flash(255, 0, 0, 1000);
+            status_ = Q_HANDLED();
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_agony\n");
             status_ = Q_HANDLED();
             break;
         }
@@ -478,15 +567,16 @@ static QState OregonPlayer_test(OregonPlayer * const me, QEvt const * const e) {
     switch (e->sig) {
         /* ${SMs::OregonPlayer::SM::global::test} */
         case Q_ENTRY_SIG: {
-            BeepForPeriod(SHORT_BEEP_MS);
-              Flash(127, 0, 0, FLASH_MS);
+            printf("Entered player_test\n");
+        	BeepForPeriod(SHORT_BEEP_MS);
+            Flash(127, 0, 0, FLASH_MS);
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPlayer::SM::global::test::RAD_RCVD} */
         case RAD_RCVD_SIG: {
             BeepForPeriod(SHORT_BEEP_MS);
-              Flash(127, 0, 0, FLASH_MS);
+            Flash(127, 0, 0, FLASH_MS);
             status_ = Q_HANDLED();
             break;
         }
@@ -499,6 +589,11 @@ static QState OregonPlayer_test(OregonPlayer * const me, QEvt const * const e) {
         case PILL_RESET_SIG: {
             Reset(me);
             status_ = Q_TRAN(&OregonPlayer_healthy);
+            break;
+        }
+        case Q_EXIT_SIG: {
+            printf("Exited player_test\n");
+            status_ = Q_HANDLED();
             break;
         }
         default: {
