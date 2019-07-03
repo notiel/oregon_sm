@@ -115,11 +115,22 @@ static QState OregonPill_active(OregonPill * const me, QEvt const * const e) {
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_REMOVED} */
         case PILL_REMOVED_SIG: {
+        	PASS_EVENT_TO(the_oregonPlayer);
+            status_ = Q_TRAN(&OregonPill_idle);
+            break;
+        }
+        case PILL_GHOUL_REMOVED_SIG: {
+           	PASS_EVENT_TO(the_oregonPlayer);
             status_ = Q_TRAN(&OregonPill_idle);
             break;
         }
         /* ${SMs::OregonPill::SM::global::active::PILL_RESET} */
         case PILL_RESET_SIG: {
+            PASS_EVENT_TO(the_oregonPlayer);
+            status_ = Q_TRAN(&OregonPill_idle);
+            break;
+        }
+        case PILL_TEST_SIG: {
             PASS_EVENT_TO(the_oregonPlayer);
             status_ = Q_TRAN(&OregonPill_idle);
             break;
@@ -199,6 +210,10 @@ static QState OregonPill_antirad(OregonPill * const me, QEvt const * const e) {
             printf("Entered pill_antirad\n");
             status_ = Q_HANDLED();
             break;
+        }
+        case TIME_TICK_1S_SIG: {
+        	status_ = Q_HANDLED();
+        	break;
         }
         case Q_EXIT_SIG: {
            printf("Exited pill_antirad\n");

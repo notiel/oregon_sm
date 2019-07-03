@@ -111,7 +111,7 @@ int main() {
             oregonPlayerQEvt Oregon_e;
             if (e.sig == RAD_RCVD_SIG) {
                 Oregon_e.super = e;
-                Oregon_e.value = 100;
+                Oregon_e.value = 1000;
                 //r = QMSM_DISPATCH(the_oregonPill,  (QEvt *)&Oregon_e);
                 r = QMSM_DISPATCH(the_oregonPlayer,  (QEvt *)&Oregon_e);
                 

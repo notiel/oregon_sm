@@ -10,6 +10,7 @@ const KeyStroke KeyStrokes[]= {
 {    PILL_GHOUL_SIG,              "PILL_GHOUL",                'g'    },
 {    PILL_TEST_SIG,               "PILL_TEST",                 't'    },
 {    PILL_REMOVED_SIG,            "PILL_REMOVED",              'q'    },
+{    PILL_GHOUL_REMOVED_SIG,      "PILL_GHOUL_REMOVED",        '7'    },
 {    TIME_TICK_1S_SIG,            "TIME_TICK_1S",              's'    },
 {    TIME_TICK_10S_SIG,           "TIME_TICK_10S",             'd'    },
 {    TIME_TICK_1M_SIG,            "TIME_TICK_1M",              'm'    },
