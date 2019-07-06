@@ -3,6 +3,10 @@
 #ifndef service_h
 #define service_h
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define     ARRAY_SIZE(foo) (sizeof(foo)/sizeof(foo[0]))
 
 #include <stdint.h>
@@ -21,6 +25,9 @@ extern const KeyStroke KeyStrokes[];    // Definition moved to C file, otherwise
                                         // won't compile
 
 
-#endif
-
 unsigned int KeyNumber();
+
+#ifdef __cplusplus
+}
+#endif
+#endif

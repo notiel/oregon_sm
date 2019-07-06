@@ -85,7 +85,6 @@ RCINCLUDES = \
 
 # C source files...
 C_SRCS := \
-	main.c \
 	service.c #\
 	#generation_light.c \
 	#biotics.c \
@@ -95,6 +94,7 @@ C_SRCS := \
 
 # C++ source files...
 CPP_SRCS :=	\
+  main.cpp \
 	oregonPlayer.cpp \
 	oregonPill.cpp \
 	eventHandlers.cpp
@@ -252,7 +252,7 @@ clean:
 	$(BIN_DIR)/*.d \
 	$(BIN_DIR)/*.exe \
 	$(BIN_DIR)/*.map
-	
+
 show:
 	@echo PROJECT  = $(PROJECT)
 	@echo CONF     = $(CONF)

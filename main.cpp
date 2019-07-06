@@ -32,7 +32,7 @@
 * mailto:info@state-machine.com
 *****************************************************************************/
 
-//#define DEBUG_SM                // Printing states  
+//#define DEBUG_SM                // Printing states
 
 //#include "qep_port.h"
 //#include "qassert.h"
@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <string>
 
 #include "bsp.h"
 #include "oregonPlayer.h"
@@ -50,7 +50,7 @@
 #include "qhsm.h"
 
 /*..........................................................................*/
-    
+
 int main() {
     uint8_t     i;                                      // Universal counter
     uint32_t    seconds=0;
@@ -73,17 +73,15 @@ int main() {
     OregonPill_ctor();
     QMSM_INIT(the_oregonPill, (QEvt *)0);
     QEvt e;
-    uint8_t c;
     //e.sig = MAX_PILL_SIG;
     //QMSM_DISPATCH(the_hand,  &e);
     for (;;) {
         static int tickCtr = 1;
-        char const *msg = (char *)0;
-
+        std::string msg;
         usleep(100000);
 
         if (kbhit()) {
-            c = (uint8_t)_getch();     /* read one character from the console */
+            char c = _getch();     /* read one character from the console */
             printf("%c: ", c);
             //for (i = 0; i < ARRAY_SIZE(KeyStrokes);i++) {
             for (i = 0; i < (TERMINATE_SIG - Q_USER_SIG); i++) {
@@ -105,7 +103,7 @@ int main() {
         // if (BlinkOn) {c
         //     if (tickCtr % BlinkTimer == 0) RGB_blink_toggle();
         // }
-        if (msg != (char *)0) {
+        if (msg.length()) {
                                  /* dispatch the event into the state machine */
             QState r;
             oregonPlayerQEvt Oregon_e;
@@ -114,7 +112,7 @@ int main() {
                 Oregon_e.value = 1000;
                 //r = QMSM_DISPATCH(the_oregonPill,  (QEvt *)&Oregon_e);
                 r = QMSM_DISPATCH(the_oregonPlayer,  (QEvt *)&Oregon_e);
-                
+
             }
             else if (e.sig == TIME_TICK_10S_SIG) {
                 e.sig = TIME_TICK_1S_SIG;
@@ -149,7 +147,7 @@ int main() {
             }
             #ifdef DEBUG
                 printf("returned: %u\n\r", r);
-            #endif    
+            #endif
             if (msg != "TICK") {
                 printf("\n");
                 //BlinkCoord.Y--;   // FAR manager console needs this
