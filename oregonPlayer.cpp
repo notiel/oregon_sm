@@ -54,6 +54,17 @@ static OregonPlayer oregonPlayer; /* the only instance of the OregonPlayer class
 /* global-scope definitions -----------------------------------------*/
 QHsm * const the_oregonPlayer = (QHsm *) &oregonPlayer; /* the opaque pointer */
 
+int GetCurrentState() {
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_healthy) return HEALTHY;
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_agony) return AGONY;
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_dead) return DEAD;
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_ghoul_good) return GHOUL_GOOD;
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_ghoul_wounded) return GHOUL_WOUNDED;
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_ghoul_healing) return GHOUL_HEALING;
+    if ((void*) the_oregonPlayer->current_ == OregonPlayer_blessed) return BLESSED;
+    return -1;
+}
+
 /*${SMs::OregonPlayer_ctor} ................................................*/
 void OregonPlayer_ctor(
     unsigned int HP,

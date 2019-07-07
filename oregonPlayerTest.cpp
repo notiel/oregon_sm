@@ -12,12 +12,9 @@ TEST(OregonPlayerTest, GivePlayerABitOfRadiation) {
 	Oregon_e.super = e;
 	Oregon_e.value = 1000;
 
-	auto r = QMSM_DISPATCH(the_oregonPlayer, (QEvt * )&Oregon_e);
+	ASSERT_EQ(QMSM_DISPATCH(the_oregonPlayer, (QEvt * )&Oregon_e), Q_RET_HANDLED);
+	ASSERT_EQ(GetCurrentState(), HEALTHY);
 
-	// Тут бы нам проверить, что состояние персонажа (r или the_oregonPlayer->current_)
-	// то какое мы ожидаем. Но не вполне понятно как это сделать - состояние - это ссылка на функцию
-	// внутри oregonPlayer.cpp. И в oregonPlayer.h эта функия не объявлена.
- 	// Ну, проверим по крайней мере здоровье.
 	OregonPlayer *me = reinterpret_cast<OregonPlayer *>(the_oregonPlayer);
 	ASSERT_EQ(me->CharHP, 26000);
 }
