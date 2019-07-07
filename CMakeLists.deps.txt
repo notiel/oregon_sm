@@ -1,0 +1,20 @@
+cmake_minimum_required (VERSION 3.14)
+
+# Set up download of external dependencies.
+# In the moment, it's only googletest library
+
+project(googletest-download NONE)
+
+# # (based on instructions from
+# https://github.com/google/googletest/blob/master/googletest/README.md)
+include(ExternalProject)
+ExternalProject_Add(googletest
+  GIT_REPOSITORY    https://github.com/google/googletest.git
+  GIT_TAG           master
+  SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/googletest-src"
+  BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/googletest-build"
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND     ""
+  INSTALL_COMMAND   ""
+  TEST_COMMAND      ""
+)
