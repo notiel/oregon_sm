@@ -45,8 +45,8 @@ unsigned int TimerAgony;</y:NodeLabel>
 #define GHOUL_HEALING 5
 #define BLESSED 6
 #define FLASH_MS 200
-№define FLASH_SEC 1010
-#swfine FLASH_1M 60100
+#define FLASH_SEC 1010
+#define FLASH_1M 60100
 #define TIMEOUT_AGONY_S 600
 #define TIMEOUT_DEATH_S 15
 #define TIMEOUT_RADX_S 900
@@ -54,7 +54,7 @@ unsigned int TimerAgony;</y:NodeLabel>
 #define MEDIUM_BEEP_MS 3000
 #define SHORT_BEEP_MS 500
 #define RED 255
-#definr RED_MEDIUM 127
+#define RED_MEDIUM 127
 #define GREEN_MEDIUN 127
 #define BLUE_MEDIUM 127
 
