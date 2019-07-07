@@ -98,6 +98,8 @@ void OregonPlayer_ctor(
     unsigned int State,
     unsigned int TimerAgony);
 
+int GetCurrentState();
+
 #ifdef __cplusplus
 }
 #endif
