@@ -17,7 +17,6 @@
 /*${.::oregonPlayer.cpp} ...................................................*/
 #include "qhsm.h"
 #include "oregonPlayer.h"
-#include "eventHandlers.h"
 #include <stdint.h>
 //Q_DEFINE_THIS_FILE
 /* global-scope definitions -----------------------------------------*/

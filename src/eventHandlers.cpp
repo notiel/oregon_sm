@@ -26,7 +26,6 @@ void UpdateTimerAgony(OregonPlayer* me, unsigned int Timer) {
 void Reset(OregonPlayer* me) {
 	printf("Reseted\n");
 	UpdateHP(me, DEFAULT_HP);
-	me->TimerDeath = 0;
 	UpdateTimerAgony(me, 0);
 }
 
