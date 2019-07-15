@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.14)
+cmake_minimum_required (VERSION 3.12)
 
 # Set up download of external dependencies.
 # In the moment, it's only googletest library

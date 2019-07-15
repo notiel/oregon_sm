@@ -1,0 +1,8 @@
+ os: windows
+ language: cpp
+ install:
+  - choco install make
+ script:
+  - cmake -G'MSYS Makefiles' ./src
+  - make
+  - ./OregonFalloutTest.exe
