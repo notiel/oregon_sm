@@ -48,7 +48,6 @@ extern "C" {
 //End of h code from diagram
 
 
-
 /*${SMs::OregonPlayer} .....................................................*/
 typedef struct {
 /* protected: */

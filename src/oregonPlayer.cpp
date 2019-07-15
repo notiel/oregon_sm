@@ -486,13 +486,15 @@ QState OregonPlayer_ghoul_healing(OregonPlayer * const me, QEvt const * const e)
         }
         /* ${SMs::OregonPlayer::SM::global::active::ghoul::ghoul_healing::RAD_RCVD} */
         case RAD_RCVD_SIG: {
-            UpdateHP(me, me->CharHP + ((oregonPlayerQEvt*)e)->value);
-            status_ = Q_HANDLED();
-            break;
-        }
-        /* ${SMs::OregonPlayer::SM::global::active::ghoul::ghoul_healing::RAD_RCVD} */
-        case RAD_RCVD_SIG: {
-            status_ = Q_TRAN(&OregonPlayer_ghoul_good);
+            /* ${SMs::OregonPlayer::SM::global::active::ghoul::ghoul_healing::RAD_RCVD::[((((oregonPlayerQEvt*)e)->value~} */
+            if (((((oregonPlayerQEvt*)e)->value+me->CharHP )>=GHOUL_HP)) {
+                status_ = Q_TRAN(&OregonPlayer_ghoul_good);
+            }
+            /* ${SMs::OregonPlayer::SM::global::active::ghoul::ghoul_healing::RAD_RCVD::[else]} */
+            else {
+                UpdateHP(me, me->CharHP + ((oregonPlayerQEvt*)e)->value);
+                status_ = Q_HANDLED();
+            }
             break;
         }
         default: {
