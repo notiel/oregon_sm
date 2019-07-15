@@ -13,7 +13,7 @@ TEST(OregonPlayerTest, GivePlayerABitOfRadiation) {
 	Oregon_e.value = 1000;
 
 	ASSERT_EQ(QMSM_DISPATCH(the_oregonPlayer, (QEvt * )&Oregon_e), Q_RET_HANDLED);
-	ASSERT_EQ(GetCurrentState(), HEALTHY);
+	ASSERT_EQ((void *) the_oregonPlayer->current_ , OregonPlayer_healthy);
 
 	OregonPlayer *me = reinterpret_cast<OregonPlayer *>(the_oregonPlayer);
 	ASSERT_EQ(me->CharHP, 26000);
