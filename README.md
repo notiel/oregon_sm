@@ -1,4 +1,5 @@
-# Машина состояний для РИ Fallout Орегон.
+# Машина состояний ля РИ Fallout Орегон.
+[![Build Status](https://travis-ci.org/notiel/oregon_sm.svg?branch=master)](https://travis-ci.org/notiel/oregon_sm)
 
 ## Настройка окружения для разработки и сборки
 
