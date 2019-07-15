@@ -41,7 +41,7 @@ extern "C" {
 #define SHORT_BEEP_MS 500
 #define RED 255
 #define RED_MEDIUM 127
-#define GREEN_MEDIUN 127
+#define GREEN_MEDIUM 127
 #define BLUE_MEDIUM 127
 #define DEFAULT_HP 27000
 #define GHOUL_HP (DEFAULT_HP/3)

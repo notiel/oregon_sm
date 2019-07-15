@@ -17,6 +17,7 @@
 /*${.::oregonPlayer.cpp} ...................................................*/
 #include "qhsm.h"
 #include "oregonPlayer.h"
+#include "eventHandlers.h"
 #include <stdint.h>
 //Q_DEFINE_THIS_FILE
 /* global-scope definitions -----------------------------------------*/
@@ -55,7 +56,7 @@ void OregonPlayer_ctor(
                     }
                case GHOUL_WOUNDED: {
                         me->StartState =
-                        (QStateHandler)& OregonPlayer_ghoul_wounded;
+                        (QStateHandler)& OregonPlayer_wounded;
                         break;
                     }
                case GHOUL_HEALING: {
@@ -204,7 +205,7 @@ QState OregonPlayer_immune(OregonPlayer * const me, QEvt const * const e) {
         }
         /* ${SMs::OregonPlayer::SM::global::active::alive::immune::HEAL} */
         case HEAL_SIG: {
-            UpdateHP(me, me->CharHP+e->value);
+            UpdateHP(me, me->CharHP + ((oregonPlayerQEvt*)e)->value);
             status_ = Q_HANDLED();
             break;
         }
@@ -307,19 +308,19 @@ QState OregonPlayer_healthy(OregonPlayer * const me, QEvt const * const e) {
         }
         /* ${SMs::OregonPlayer::SM::global::active::alive::healthy::HEAL} */
         case HEAL_SIG: {
-            UpdateHP(me, me->CharHP+e->value);
+            UpdateHP(me, me->CharHP+((oregonPlayerQEvt*)e)->value);
             status_ = Q_HANDLED();
             break;
         }
         /* ${SMs::OregonPlayer::SM::global::active::alive::healthy::RAD_RCVD} */
         case RAD_RCVD_SIG: {
             /* ${SMs::OregonPlayer::SM::global::active::alive::healthy::RAD_RCVD::[((oregonPlayerQEvt*)e)->value>=~} */
-            if (((oregonPlayerQEvt*)e)->value >= me>CharHP) {
+            if (((oregonPlayerQEvt*)e)->value >= me->CharHP) {
                 status_ = Q_TRAN(&OregonPlayer_agony);
             }
             /* ${SMs::OregonPlayer::SM::global::active::alive::healthy::RAD_RCVD::[else]} */
             else {
-                UpdateHP(me, me->CharHP-((oRegonPlayer*)e)->value);
+                UpdateHP(me, me->CharHP - ((oregonPlayerQEvt*)e)->value);
                 status_ = Q_HANDLED();
             }
             break;
@@ -388,7 +389,7 @@ QState OregonPlayer_agony(OregonPlayer * const me, QEvt const * const e) {
         }
         /* ${SMs::OregonPlayer::SM::global::active::alive::agony::HEAL} */
         case HEAL_SIG: {
-            UpdateHP(me, me->CharHP + ((oregonPllayerQEvt*)e)->value);
+            UpdateHP(me, me->CharHP + ((oregonPlayerQEvt*)e)->value);
             status_ = Q_TRAN(&OregonPlayer_healthy);
             break;
         }
