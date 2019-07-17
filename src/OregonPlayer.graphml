@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
-  <!--Created by yEd 3.19-->
+  <!--Created by yEd 3.18.2-->
   <key attr.name="Description" attr.type="string" for="graph" id="d0"/>
   <key for="port" id="d1" yfiles.type="portgraphics"/>
   <key for="port" id="d2" yfiles.type="portgeometry"/>
@@ -55,7 +55,7 @@ unsigned int TimerAgony;</y:NodeLabel>
 #define SHORT_BEEP_MS 500
 #define RED 255
 #define RED_MEDIUM 127
-#define GREEN_MEDIUN 127
+#define GREEN_MEDIUM 127
 #define BLUE_MEDIUM 127
 
 #define DEFAULT_HP 27000
@@ -221,8 +221,8 @@ entry/
                 </y:ModelParameter>
               </y:NodeLabel>
               <y:StyleProperties>
-                <y:Property class="com.yworks.yfiles.bpmn.view.EventCharEnum" name="com.yworks.bpmn.characteristic" value="EVENT_CHARACTERISTIC_START"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+                <y:Property class="com.yworks.yfiles.bpmn.view.EventCharEnum" name="com.yworks.bpmn.characteristic" value="EVENT_CHARACTERISTIC_START"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4cc"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffffe6"/>
                 <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="EVENT_TYPE_PLAIN"/>
@@ -310,7 +310,7 @@ entry/
     BeepForTime(MEDIUM_BEEP_MS);
 
 RAD_RCVD[else]/
-   UpdateHP(me, me-&gt;CharHP-((oregonPlayer*)e)-&gt;value);
+   UpdateHP(me, me-&gt;CharHP-((oregonPlayerQEvt*)e)-&gt;value);
    
 TIME_TICK_1S/
     ShowCurrentHealth(me);
@@ -342,7 +342,7 @@ TIME_TICK_1S/
     Flash(0, GREEN_MEDIUM, 0, FLASH_SEC);
 
  HEAL/
-    UpdateHP(me, me-&gt;CharHP+e-&gt;value);</y:NodeLabel>
+    UpdateHP(me, me-&gt;CharHP+((oregonPlayerQEvt*)e)-&gt;value);</y:NodeLabel>
                       <y:Shape type="roundrectangle"/>
                       <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
                       <y:NodeBounds considerNodeLabelSize="true"/>
@@ -423,8 +423,8 @@ entry/
                 </y:ModelParameter>
               </y:NodeLabel>
               <y:StyleProperties>
-                <y:Property class="com.yworks.yfiles.bpmn.view.EventCharEnum" name="com.yworks.bpmn.characteristic" value="EVENT_CHARACTERISTIC_START"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+                <y:Property class="com.yworks.yfiles.bpmn.view.EventCharEnum" name="com.yworks.bpmn.characteristic" value="EVENT_CHARACTERISTIC_START"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4cc"/>
                 <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffffe6"/>
                 <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="EVENT_TYPE_PLAIN"/>
@@ -861,7 +861,6 @@ RAD_RCVD/
       </data>
     </edge>
     <edge id="n5::e3" source="n5::n4" target="n5::n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -873,7 +872,6 @@ RAD_RCVD/
       </data>
     </edge>
     <edge id="n5::e4" source="n5::n5" target="n5::n3::n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="15.0" ty="-41.17262518564314"/>
@@ -885,7 +883,6 @@ RAD_RCVD/
       </data>
     </edge>
     <edge id="n5::e5" source="n5::n5" target="n5::n1::n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
