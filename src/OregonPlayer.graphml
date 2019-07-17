@@ -85,7 +85,7 @@ unsigned int TimerAgony;
           <y:Geometry height="537.9258620689657" width="516.4898821947393" x="846.0579910309465" y="114.12097856140628"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Consolas" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="532.0" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="tl" textColor="#000000" verticalTextPosition="bottom" visible="true" width="459.23828125" x="4.0" xml:space="preserve" y="4.0">Constructor code: (do not delete this caption):
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Consolas" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="520.0" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="tl" textColor="#000000" verticalTextPosition="bottom" visible="true" width="459.23828125" x="4.0" xml:space="preserve" y="4.0">Constructor code: (do not delete this caption):
 me-&gt;CharHP = HP;
 me-&gt;TimerAgony = TimerAgony;
 switch (State) {
@@ -128,7 +128,6 @@ switch (State) {
            default:
                me-&gt;StartState =(QStateHandler)&amp; OregonPlayer_healthy;
        }
-QHsm_ctor(&amp;me-&gt;super, Q_STATE_CAST(&amp;OregonPlayer_initial));
 </y:NodeLabel>
         </y:UMLNoteNode>
       </data>
