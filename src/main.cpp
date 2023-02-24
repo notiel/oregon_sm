@@ -36,7 +36,9 @@
 
 //#include "qep_port.h"
 //#include "qassert.h"
+#ifdef _WIN32
 #include <conio.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -48,6 +50,28 @@
 #include "service.h"
 #include "eventHandlers.h"
 #include "qhsm.h"
+
+#ifndef _WIN32
+#include <sys/ioctl.h>
+#include <termios.h>
+
+int kbhit()
+{
+    termios term;
+    tcgetattr(0, &term);
+
+    termios term2 = term;
+    term2.c_lflag &= ~ICANON;
+    tcsetattr(0, TCSANOW, &term2);
+
+    int byteswaiting;
+    ioctl(0, FIONREAD, &byteswaiting);
+
+    tcsetattr(0, TCSANOW, &term);
+
+    return byteswaiting > 0;
+}
+#endif
 
 /*..........................................................................*/
 
@@ -81,8 +105,12 @@ int main() {
         usleep(100000);
 
         if (kbhit()) {
+#ifdef _WIN32
             char c = _getch();     /* read one character from the console */
-            printf("%c: ", c);
+#else
+			char c = getchar();
+#endif
+			printf("%c: ", c);
             //for (i = 0; i < ARRAY_SIZE(KeyStrokes);i++) {
             for (i = 0; i < (TERMINATE_SIG - Q_USER_SIG); i++) {
                 if (c ==    KeyStrokes[i].Key) {
